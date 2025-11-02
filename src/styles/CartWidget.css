@@ -1,0 +1,19 @@
+.cart-widget {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: turquoise;
+  font-weight: bold;
+}
+
+.cart-icon {
+  font-size: 1.2rem;
+}
+
+.cart-count {
+  background-color: violet;
+  color: black;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+}

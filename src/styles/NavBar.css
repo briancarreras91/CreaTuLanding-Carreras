@@ -1,0 +1,32 @@
+.esk-navbar {
+  background-color: black;
+}
+
+.esk-logo {
+  height: 100px;
+}
+
+.navbar-nav .nav-link,
+.navbar-nav .dropdown-toggle {
+  color: rgb(179, 74, 179);
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .dropdown-item:hover {
+  color: rgb(122, 243, 231);
+}
+
+.navbar-nav .dropdown-menu {
+  background-color: #1a1a1a;
+}
+
+.navbar-nav .dropdown-item {
+  color: rgb(231, 140, 155);
+}
+
+.esk-cart {
+  color: blue;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
