@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css"; // ✅ estilos globales desde App
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/ItemListContainer";

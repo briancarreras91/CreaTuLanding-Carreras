@@ -1,11 +1,11 @@
+import "bootstrap/dist/css/bootstrap.min.css"; // ✅ estilos solo aquí
 import { FaShoppingCart } from "react-icons/fa";
-import "../styles/CartWidget.css";
 
 function CartWidget() {
   return (
-    <div className="cart-widget">
-      <FaShoppingCart className="cart-icon" />
-      <span className="cart-count">3</span>
+    <div className="esk-cart">
+      <FaShoppingCart size={20} />
+      <span className="cart-count">0</span>
     </div>
   );
 }
