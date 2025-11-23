@@ -1,20 +1,15 @@
-import "bootstrap/dist/css/bootstrap.min.css"; // ✅ estilos solo aquí
-import { Link } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import Item from "./Item";
 
-const Item = ({ producto }) => {
+const ItemList = ({ productos }) => {
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>{producto.nombre}</Card.Title>
-        <Card.Text>Precio: ${producto.precio}</Card.Text>
-        <Button as={Link} to={`/item/${producto.id}`} variant="primary">
-          Ver detalle
-        </Button>
-      </Card.Body>
-    </Card>
+    <div className="row">
+      {productos.map((prod) => (
+        <div className="col-md-3 mb-4" key={prod.id}>
+          <Item producto={prod} />
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default Item;
+export default ItemList;
