@@ -1,17 +1,23 @@
+import { Card } from "react-bootstrap";
 import ItemCount from "./ItemCount";
-import Card from "react-bootstrap/Card";
 
-const ItemDetail = ({ producto }) => {
+export default function ItemDetail({ producto }) {
   return (
-    <Card>
+    <Card className="mb-4">
+      <Card.Img
+        variant="top"
+        src={producto.imagen}
+        alt={producto.nombre}
+        className="product-img-detalle"
+      />
       <Card.Body>
         <Card.Title>{producto.nombre}</Card.Title>
         <Card.Text>{producto.descripcion}</Card.Text>
-        <Card.Text>Precio: ${producto.precio}</Card.Text>
-        <ItemCount stock={10} initial={1} />
+        <Card.Text>
+          <strong>${producto.precio}</strong>
+        </Card.Text>
+        <ItemCount stock={producto.stock} initial={1} />
       </Card.Body>
     </Card>
   );
-};
-
-export default ItemDetail;
+}

@@ -1,15 +1,12 @@
 import Item from "./Item";
+import { Row } from "react-bootstrap";
 
-const ItemList = ({ productos }) => {
+export default function ItemList({ productos }) {
   return (
-    <div className="row">
-      {productos.map((prod) => (
-        <div className="col-md-3 mb-4" key={prod.id}>
-          <Item producto={prod} />
-        </div>
+    <Row>
+      {productos.map((p) => (
+        <Item key={p.id} producto={p} />
       ))}
-    </div>
+    </Row>
   );
-};
-
-export default ItemList;
+}

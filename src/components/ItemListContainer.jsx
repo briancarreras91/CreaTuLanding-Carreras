@@ -1,45 +1,36 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import productos from "../data/productos.json";
 import ItemList from "./ItemList";
 
-const productos = [
-  {
-    id: "1",
-    nombre: "Whisky Jack Daniels",
-    categoria: "destilados",
-    precio: 15000,
-  },
-  { id: "2", nombre: "Fernet Branca", categoria: "destilados", precio: 8000 },
-  { id: "3", nombre: "Cerveza Heineken", categoria: "cervezas", precio: 1200 },
-  { id: "4", nombre: "Vino Malbec", categoria: "vinos", precio: 5000 },
-];
-
-const getProductos = (categoryId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (categoryId) {
-        resolve(productos.filter((prod) => prod.categoria === categoryId));
-      } else {
-        resolve(productos);
-      }
-    }, 1000);
-  });
-};
-
-const ItemListContainer = () => {
+export default function ItemListContainer() {
   const { categoryId } = useParams();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    getProductos(categoryId).then((res) => setItems(res));
+    const getProductos = new Promise((resolve) => {
+      setTimeout(() => {
+        if (categoryId) {
+          resolve(
+            productos.filter(
+              (p) => p.tipo.toLowerCase() === categoryId.toLowerCase()
+            )
+          );
+        } else {
+          resolve(productos);
+        }
+      }, 500);
+    });
+
+    getProductos.then((res) => setItems(res));
   }, [categoryId]);
 
   return (
-    <div className="container mt-4">
-      <h2>Catálogo {categoryId ? `- ${categoryId}` : ""}</h2>
+    <div>
+      <h2 className="mb-4">
+        {categoryId ? `Categoría: ${categoryId}` : "Catálogo completo"}
+      </h2>
       <ItemList productos={items} />
     </div>
   );
-};
-
-export default ItemListContainer;
+}

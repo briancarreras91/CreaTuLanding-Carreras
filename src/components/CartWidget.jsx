@@ -1,12 +1,12 @@
-import { FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-function CartWidget() {
+export default function CartWidget({ count, total }) {
   return (
-    <div className="esk-cart">
-      <FaShoppingCart size={20} />
-      <span className="cart-count">0</span>
-    </div>
+    <Link to="/cart" className="cart-widget">
+      <i className="bi bi-cart-fill"></i>
+      <span className="cart-text">
+        {count} items - ${total}
+      </span>
+    </Link>
   );
 }
-
-export default CartWidget;

@@ -225,7 +225,7 @@
     "marca": "Patagonia",
     "tipo": "Cerveza",
     "variante": "730ml",
-    "imagen": "/Patagonia.png",
+    "imagen": "/patagonia.png",
     "precio": 2400,
     "stock": 27,
     "descripcion": "Cerveza argentina refrescante, ideal para acompañar comidas."
@@ -258,7 +258,7 @@
     "marca": "Rutini",
     "tipo": "Vino",
     "variante": "750ml",
-    "imagen": "/rutina.png",
+    "imagen": "/rutini.png",
     "precio": 15000,
     "stock": 14,
     "descripcion": "Vino tinto argentino Malbec, elegante y con notas frutales."
@@ -291,7 +291,7 @@
     "marca": "Sprite",
     "tipo": "Gaseosa",
     "variante": "2.25L",
-    "imagen": "/Sprite.png",
+    "imagen": "/sprite.png",
     "precio": 1700,
     "stock": 20,
     "descripcion": "Gaseosa sabor lima-limón, refrescante y burbujeante."
