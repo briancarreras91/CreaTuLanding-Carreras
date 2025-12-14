@@ -1,88 +1,131 @@
 import { useState, useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../service/firebase";
-import { Form, Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 
 export default function CheckoutForm() {
   const { cart, getTotalPrice, clearCart } = useContext(CartContext);
-  const [buyer, setBuyer] = useState({ nombre: "", email: "", telefono: "" });
-  const [orderId, setOrderId] = useState(null);
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [pago, setPago] = useState("");
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setBuyer({ ...buyer, [e.target.name]: e.target.value });
+  const validarTelefono = (tel) => {
+    const regex = /^\+?54?\s?9?\d{10,11}$/;
+    return regex.test(tel);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validaciones simples
+    if (!nombre.trim().includes(" ")) {
+      setError("Ingresá nombre y apellido completos");
+      return;
+    }
+    if (!email.includes("@")) {
+      setError("Ingresá un correo válido");
+      return;
+    }
+    if (email !== confirmEmail) {
+      setError("Los correos no coinciden");
+      return;
+    }
+    if (!validarTelefono(telefono)) {
+      setError(
+        "ngresá un teléfono válido (de 10 a 13 dígitos solo números, opcional +54) "
+      );
+      return;
+    }
+    if (!pago) {
+      setError("Seleccioná un método de pago");
+      return;
+    }
+
+    setError("");
+
     const order = {
-      buyer,
+      buyer: { nombre, email, telefono, pago },
       items: cart,
       total: getTotalPrice(),
       date: new Date(),
     };
 
-    const ordersCollection = collection(db, "orders");
-
-    addDoc(ordersCollection, order)
-      .then((docRef) => {
-        setOrderId(docRef.id);
-        clearCart();
-      })
-      .catch((error) => {
-        console.error("Error al generar la orden:", error);
-      });
+    try {
+      const db = getFirestore();
+      const ordersCollection = collection(db, "orders");
+      await addDoc(ordersCollection, order);
+      clearCart();
+      alert("¡Compra realizada con éxito!");
+    } catch (err) {
+      console.error(err);
+      setError("Error al guardar la orden");
+    }
   };
 
   return (
-    <div className="checkout-form mt-4">
-      <h4>Finalizar compra</h4>
-      {orderId ? (
-        <p>
-          ¡Gracias por tu compra! Tu número de orden es:{" "}
-          <strong>{orderId}</strong>
-        </p>
-      ) : (
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control
-              type="text"
-              name="nombre"
-              value={buyer.nombre}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
+    <Form onSubmit={handleSubmit} className="mt-4">
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={buyer.email}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Nombre y Apellido</Form.Label>
+        <Form.Control
+          type="text"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+          required
+        />
+      </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Teléfono</Form.Label>
-            <Form.Control
-              type="text"
-              name="telefono"
-              value={buyer.telefono}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </Form.Group>
 
-          <Button variant="success" type="submit">
-            Confirmar compra
-          </Button>
-        </Form>
-      )}
-    </div>
+      <Form.Group className="mb-3">
+        <Form.Label>Confirmar Email</Form.Label>
+        <Form.Control
+          type="email"
+          value={confirmEmail}
+          onChange={(e) => setConfirmEmail(e.target.value)}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Teléfono</Form.Label>
+        <Form.Control
+          type="text"
+          value={telefono}
+          onChange={(e) => setTelefono(e.target.value)}
+          required
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Forma de pago</Form.Label>
+        <Form.Select
+          value={pago}
+          onChange={(e) => setPago(e.target.value)}
+          required
+        >
+          <option value="">Seleccioná...</option>
+          <option value="efectivo">Efectivo</option>
+          <option value="tarjeta">Tarjeta de crédito</option>
+          <option value="mercado_pago">Mercado Pago</option>
+        </Form.Select>
+      </Form.Group>
+
+      <Button variant="success" type="submit">
+        Confirmar compra
+      </Button>
+    </Form>
   );
 }

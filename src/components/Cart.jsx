@@ -41,9 +41,7 @@ export default function Cart() {
         Vaciar carrito
       </Button>
 
-      <div className="mt-4">
-        <CheckoutForm />
-      </div>
+      <CheckoutForm />
     </div>
   );
 }
