@@ -32,8 +32,10 @@ export default function NavBar() {
             <Nav.Link as={Link} to="/category/Whisky">
               Whisky
             </Nav.Link>
+            <Nav.Link as={Link} to="/category/Bebidas%20sin%20alcohol">
+              Bebidas sin Alcohol
+            </Nav.Link>
           </Nav>
-          {/* Carrito a la derecha */}
           <CartWidget count={cartCount} total={cartTotal} />
         </Navbar.Collapse>
       </Container>

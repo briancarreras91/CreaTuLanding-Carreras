@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import productos from "../data/productos.json";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../service/firebase";
 import ItemDetail from "./ItemDetail";
 
 export default function ItemDetailContainer() {
@@ -8,16 +9,22 @@ export default function ItemDetailContainer() {
   const [producto, setProducto] = useState(null);
 
   useEffect(() => {
-    const getProducto = new Promise((resolve, reject) => {
-      const prod = productos.find((p) => p.id === parseInt(id));
-      setTimeout(() => {
-        prod ? resolve(prod) : reject("Producto no encontrado");
-      }, 500);
-    });
+    const getProducto = async () => {
+      try {
+        const docRef = doc(db, "items", id);
+        const snapshot = await getDoc(docRef);
 
-    getProducto
-      .then((res) => setProducto(res))
-      .catch((err) => console.error(err));
+        if (snapshot.exists()) {
+          setProducto({ id: snapshot.id, ...snapshot.data() });
+        } else {
+          console.error("Producto no encontrado");
+        }
+      } catch (error) {
+        console.error("Error al traer producto:", error);
+      }
+    };
+
+    getProducto();
   }, [id]);
 
   return (
