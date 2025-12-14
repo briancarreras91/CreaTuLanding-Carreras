@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 
-export default function ItemCount({ stock, initial }) {
+export default function ItemCount({ stock, initial, onAdd }) {
   const [count, setCount] = useState(initial);
 
   const incrementar = () => {
@@ -13,7 +13,7 @@ export default function ItemCount({ stock, initial }) {
   };
 
   const agregar = () => {
-    alert(`Agregaste ${count} producto(s) al carrito`);
+    onAdd(count);
   };
 
   return (
