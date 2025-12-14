@@ -20,7 +20,7 @@ export default function CheckoutForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validaciones simples
+    // Validaciones
     if (!nombre.trim().includes(" ")) {
       setError("Ingresá nombre y apellido completos");
       return;
@@ -35,7 +35,7 @@ export default function CheckoutForm() {
     }
     if (!validarTelefono(telefono)) {
       setError(
-        "ngresá un teléfono válido (de 10 a 13 dígitos solo números, opcional +54) "
+        "ingresá un teléfono válido (de 10 a 13 dígitos solo números, opcional +54) "
       );
       return;
     }
