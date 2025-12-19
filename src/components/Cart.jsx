@@ -1,47 +1,66 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
-import CheckoutForm from "./CheckoutForm";
+import { toastSuccess, toastWarn, toastConfirm } from "./Toast";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const { cart, removeItem, clearCart, getTotalPrice } =
     useContext(CartContext);
 
+  const handleRemove = (id) => {
+    removeItem(id);
+    toastWarn("Producto eliminado del carrito");
+  };
+
+  const handleClear = () => {
+    toastConfirm({
+      message: "¿Seguro que querés vaciar el carrito?",
+      onConfirm: () => {
+        clearCart();
+        toastSuccess("Carrito vaciado");
+      },
+      onCancel: () => {},
+    });
+  };
+
   if (cart.length === 0) {
-    return (
-      <div>
-        <h3>Tu carrito está vacío</h3>
-        <NavLink to="/catalogo">
-          <Button variant="primary">Volver al catálogo</Button>
-        </NavLink>
-      </div>
-    );
+    return <p>Tu carrito está vacío.</p>;
   }
 
   return (
     <div>
-      <h3>Carrito de compras</h3>
-      {cart.map((prod) => (
-        <div key={prod.id} className="mb-2">
-          <p>
-            {prod.nombre} x {prod.quantity} = ${prod.quantity * prod.precio}
-          </p>
+      {cart.map((item) => (
+        <div
+          key={item.id}
+          className="d-flex justify-content-between align-items-center border-bottom py-2"
+        >
+          <div>
+            <strong>{item.nombre ?? item.title}</strong>
+            <div>Cantidad: {item.quantity}</div>
+            <div>Precio: ${item.precio}</div>
+          </div>
           <Button
-            variant="danger"
+            variant="outline-danger"
             size="sm"
-            onClick={() => removeItem(prod.id)}
+            onClick={() => handleRemove(item.id)}
           >
-            Eliminar
+            Quitar
           </Button>
         </div>
       ))}
-      <h4>Total: ${getTotalPrice()}</h4>
-      <Button variant="warning" onClick={clearCart}>
-        Vaciar carrito
-      </Button>
 
-      <CheckoutForm />
+      <div className="d-flex justify-content-between align-items-center mt-3">
+        <strong>Total: ${getTotalPrice()}</strong>
+        <div className="d-flex gap-2">
+          <Button variant="secondary" onClick={handleClear}>
+            Vaciar carrito
+          </Button>
+          <Link to="/checkout">
+            <Button variant="success">Ir al checkout</Button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

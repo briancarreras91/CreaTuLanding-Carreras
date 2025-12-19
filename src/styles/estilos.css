@@ -40,3 +40,41 @@
   color: white; /* número y total en blanco */
   font-size: 0.95rem;
 }
+
+/* Loader */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* ocupa toda la pantalla */
+  background-color: #000; /* opcional: negro institucional */
+}
+
+.loader-gif {
+  width: 200px;
+  height: auto;
+}
+
+/* Checkout */
+
+.checkout-form {
+  background-color: #0e0a0a !important;
+  border: 2px solid #6a0dad !important;
+}
+
+.checkout-form h2 {
+  color: #6a0dad !important;
+}
+
+.checkout-form .form-label {
+  color: #6a0dad !important;
+}
+
+.checkout-form .btn-success {
+  background-color: #6a0dad !important;
+  border: none !important;
+}
+
+.checkout-form .btn-success:hover {
+  background-color: #ff69b4 !important;
+}

@@ -1,16 +1,53 @@
-# React + Vite
+# Esk-bio E‑Commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto de e‑commerce para la venta y entrega de bebidas alcohólicas, desarrollado con **React**, **Firebase** y **React Bootstrap**.  
+Incluye carrito de compras, checkout con validaciones y actualización de stock en tiempo real.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologías utilizadas
 
-## React Compiler
+- **React 18** + Vite
+- **React Router DOM** para navegación
+- **React Bootstrap** para UI
+- **Firebase Firestore** para persistencia de datos
+- **React Toastify** para notificaciones
+- **Context API** para manejo global del carrito
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Estructura principal
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `src/components` → componentes reutilizables (NavBar, Cart, CheckoutForm, ItemListContainer, etc.)
+- `src/context/CartContext.jsx` → lógica del carrito
+- `src/service/firebase.jsx` → configuración de Firebase
+- `src/styles/estilos.css` → estilos institucionales
+
+---
+
+## Funcionalidades
+
+- **Catálogo**: listado de productos con imágenes y categorías.
+- **Detalle de producto**: información completa y stock disponible.
+- **Carrito**:
+  - Agregar, quitar y vaciar productos.
+  - Cálculo automático del total.
+  - Notificaciones con Toastify.
+- **Checkout**:
+  - Formulario con validaciones (nombre, email, teléfono, método de pago).
+  - Guardado de orden en Firestore.
+  - Actualización de stock en tiempo real.
+  - Mensaje de agradecimiento al finalizar:
+  - Botón **Seguir comprando** que redirige al catálogo.
+
+---
+
+## Demo en línea
+
+Podés ver el proyecto funcionando en el siguiente enlace:
+
+[esk-bio.vercel.app](https://esk-bio.vercel.app)
+
+## Autor
+
+Brian Carreras.
