@@ -16,13 +16,14 @@ export default function CheckoutForm() {
   const [pago, setPago] = useState("");
   const [loading, setLoading] = useState(false);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   const validarTelefono = (tel) => {
     const regex = /^\+?54?\s?\d{10,13}$/;
     return regex.test(tel);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!nombre.trim().includes(" ")) {
@@ -55,26 +56,33 @@ export default function CheckoutForm() {
       date: new Date(),
     };
 
-    try {
-      const ordersCollection = collection(db, "orders");
-      await addDoc(ordersCollection, order);
+    const ordersCollection = collection(db, "orders");
 
-      for (const item of cart) {
-        const itemRef = doc(db, "items", item.id);
-        await updateDoc(itemRef, {
-          stock: item.stock - item.quantity,
+    addDoc(ordersCollection, order)
+      .then((docRef) => {
+        // Guardamos el ID de la orden
+        setOrderId(docRef.id);
+
+        // Actualizamos stock de cada item
+        const updates = cart.map((item) => {
+          const itemRef = doc(db, "items", item.id);
+          return updateDoc(itemRef, { stock: item.stock - item.quantity });
         });
-      }
 
-      clearCart();
-      toastSuccess("¡Compra realizada con éxito! Stock actualizado.");
-      setOrderConfirmed(true);
-    } catch (err) {
-      console.error(err);
-      toastError("Error al procesar la compra. Intentalo nuevamente.");
-    } finally {
-      setLoading(false);
-    }
+        return Promise.all(updates);
+      })
+      .then(() => {
+        clearCart();
+        toastSuccess("¡Compra realizada con éxito! Stock actualizado.");
+        setOrderConfirmed(true);
+      })
+      .catch((err) => {
+        console.error(err);
+        toastError("Error al procesar la compra. Intentalo nuevamente.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   if (loading) {
@@ -86,10 +94,14 @@ export default function CheckoutForm() {
       <div className="checkout-form p-4 rounded shadow mt-4 text-center">
         <h2 className="mb-4">¡Gracias por tu compra!</h2>
         <p>
-          {" "}
           Tu pedido fue registrado correctamente. Revisá tu correo electrónico
           para concretar el pago y coordinar el envío.
         </p>
+        {orderId && (
+          <p className="mt-3">
+            <strong>ID de tu orden:</strong> {orderId}
+          </p>
+        )}
         <Link to="/catalogo">
           <Button variant="primary" className="mt-3 px-4">
             Seguir comprando
